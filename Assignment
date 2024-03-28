@@ -39,6 +39,6 @@ def get_negative_sequences(file_names):
     # Open and process negative sequences (similar to crop_sequences)
 
 # Example usage
-file_names = ["ENCFF260PVK", "ENCFF006OSW", ENCFF478ZBE", "ENCFF676QIM", "ENCFF477UFH", "ENCFF397KNY", "ENCFF965KSG", "ENCFF823DHV", "ENCFF870FOG", "ENCFF168GAN" ]  # Your list of filenames
+file_names = ["ENCFF260PVK", "ENCFF220XPZ", ENCFF487LCQ", "ENCFF676QIM", "ENCFF477UFH", "ENCFF561HFN", "ENCFF965KSG", "ENCFF984DWL", "ENCFF870FOG", "ENCFF168GAN" ] 
 crop_sequences(file_names, 300)
 get_negative_sequences(file_names)
