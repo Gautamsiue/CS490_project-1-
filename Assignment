@@ -1,0 +1,44 @@
+import os
+import gzip
+import subprocesses
+
+# Get user input for paths
+reference_genome = input("Enter path to reference genome (e.g., hg38.fa): ")
+project_dir = input("Enter path to project directory: ")
+
+file_extension = ".bed" 
+
+def crop_sequences(file_names, length):
+  for filename in file_names:
+    # Open files with proper paths
+    with open(os.path.join(project_dir, f"{filename}{file_extension}"), "r") as file:
+      sequences = [line.strip() for line in file.readlines()]
+
+    cropped_sequences = [seq[:length] for seq in sequences if len(seq) >= length]
+
+    cropped_file_name = os.path.join(project_dir, f"ProjectFiles/{filename}_cropped{file_extension}")
+    with open(cropped_file_name, "w") as file:
+      for seq in cropped_sequences:
+        file.write(seq + "\n")
+
+    print(f"The length of sequences in {filename}_cropped.fa: {len(cropped_sequences)}")
+
+
+def get_negative_sequences(file_names):
+  for filename in file_names:
+    # Assuming bedtools is available, use subprocess for safer execution
+    bed_file = os.path.join(project_dir, f"{filename}.bed")
+    negative_file = os.path.join(project_dir, f"{filename}_negative{file_extension}")
+    command = f"bedtools getfasta -fi {reference_genome} -bed {bed_file} -fo {negative_file}"
+    try:
+      subprocess.run(command.split(), check=True)
+    except subprocess.CalledProcessError as e:
+      print(f"Error running bedtools: {e}")
+      continue  # Skip to next file on error
+
+    # Open and process negative sequences (similar to crop_sequences)
+
+# Example usage
+file_names = ["ENCFF260PVK", "ENCFF006OSW", ENCFF478ZBE", "ENCFF676QIM", "ENCFF477UFH", "ENCFF397KNY", "ENCFF965KSG", "ENCFF823DHV", "ENCFF870FOG", "ENCFF168GAN" ]  # Your list of filenames
+crop_sequences(file_names, 300)
+get_negative_sequences(file_names)
